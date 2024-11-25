@@ -1,0 +1,49 @@
+{
+	"ABI version": 2,
+	"version": "2.7",
+	"header": ["pubkey", "time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "withdraw",
+			"inputs": [
+				{"name":"amount","type":"uint128"},
+				{"name":"recipient","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getBalance",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint128"}
+			]
+		},
+		{
+			"name": "deployer",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"deployer","type":"address"}
+			]
+		}
+	],
+	"getters": [
+	],
+	"events": [
+	],
+	"fields": [
+		{"init":true,"name":"_pubkey","type":"uint256"},
+		{"init":false,"name":"_timestamp","type":"uint64"},
+		{"init":false,"name":"_constructorFlag","type":"bool"},
+		{"init":false,"name":"deployer","type":"address"}
+	]
+}

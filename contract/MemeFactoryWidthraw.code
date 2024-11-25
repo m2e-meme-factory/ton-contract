@@ -1,0 +1,391 @@
+.fragment c4_to_c7, {
+	PUSHROOT
+	CTOS
+	LDU 256 ; pubkey c4
+	LDU 64 ; pubkey timestamp c4
+	LDU 1 ; ctor flag
+	LDMSGADDR
+	ENDS
+	SETGLOB 10
+	SETGLOB 6
+	SETGLOB 3
+	SETGLOB 2
+}
+
+.fragment c7_to_c4, {
+	GETGLOB 10
+	GETGLOB 3
+	GETGLOB 2
+	NEWC
+	STU 256
+	STU 64
+	STONE
+	STSLICE
+	ENDC
+	POPROOT
+}
+
+.fragment constructor, {
+	DROP
+	GETGLOB 2
+	ISNULL
+	IFREF {
+		.inline c4_to_c7
+	}
+	GETGLOB 6
+	THROWIF 51
+	ENDS
+	.loc MemeFactoryWidthraw.sol, 21
+	ACCEPT
+	.loc MemeFactoryWidthraw.sol, 22
+	GETGLOB 9
+	SETGLOB 10
+	.loc MemeFactoryWidthraw.sol, 0
+	CALLREF {
+		.inline c7_to_c4
+	}
+	THROW 0
+}
+
+.fragment deployer, {
+	DROP
+	ENDS
+	CALLREF {
+		.inline c4_to_c7
+	}
+	GETGLOB 10
+	OVER
+	PUSHCONT {
+		PUSHSLICE xc00000000000000000000000009c751d15
+		NEWC
+		STSLICE
+		STSLICE
+		ENDC
+		PUSHINT 0
+		SENDRAWMSG
+	}
+	IF
+	THROW 0
+}
+
+.fragment getBalance_12065fe0_internal, {
+	.loc MemeFactoryWidthraw.sol, 53
+	GETPARAM 7
+	FIRST
+	.loc MemeFactoryWidthraw.sol, 0
+}
+
+.fragment getBalance, {
+	DROP
+	GETGLOB 6
+	THROWIFNOT 76
+	GETGLOB 2
+	ISNULL
+	IFREF {
+		.inline c4_to_c7
+	}
+	.loc MemeFactoryWidthraw.sol, 52
+	ENDS
+	.loc MemeFactoryWidthraw.sol, 0
+	CALLREF {
+		.inline getBalance_12065fe0_internal
+	}
+	OVER
+	PUSHCONT {
+		PUSH S3
+		CTOS
+		LDU 2
+		LDMSGADDR
+		DROP
+		NIP
+		NEWC
+		STSLICECONST xc
+		STSLICE
+		PUSHINT 2787600497
+		STUR 130
+		STU 128
+		ENDC
+		PUSHINT 0
+		SENDRAWMSG
+	}
+	PUSHCONT {
+		DROP
+	}
+	IFELSE
+	IFREF {
+		.inline c7_to_c4
+	}
+	THROW 0
+}
+
+.fragment withdraw_1d9b0783_internal, {
+	.loc MemeFactoryWidthraw.sol, 15
+	PUSHREF {
+		.blob x4f6e6c79206465706c6f79657220697320616c6c6f77656420746f2063616c6c2074686973206d6574686f64
+	}
+	GETGLOB 9
+	GETGLOB 10
+	SDEQ
+	THROWARGIFNOT 101
+	.loc MemeFactoryWidthraw.sol, 32
+	ACCEPT
+	.loc MemeFactoryWidthraw.sol, 35
+	SWAP
+	GETPARAM 7
+	FIRST
+	DEPTH
+	ADDCONST -2
+	PICK
+	SUB
+	UFITS 120
+	PUSHINT 10000000
+	SUB
+	UFITS 128
+	MIN
+	.loc MemeFactoryWidthraw.sol, 41
+	PUSHREF {
+		.blob x496e73756666696369656e742062616c616e6365
+	}
+	OVER
+	GTINT 0
+	THROWARGIFNOT 102
+	.loc MemeFactoryWidthraw.sol, 44
+	UFITS 64
+	SWAP
+	NEWC
+	STSLICECONST x62_
+	STSLICE
+	SWAP
+	STGRAMS
+	PUSHINT 107
+	STZEROES
+	ENDC
+	PUSHINT 1
+	SENDRAWMSG
+	.loc MemeFactoryWidthraw.sol, 0
+}
+
+.fragment withdraw, {
+	DROP
+	GETGLOB 6
+	THROWIFNOT 76
+	GETGLOB 2
+	ISNULL
+	IFREF {
+		.inline c4_to_c7
+	}
+	.loc MemeFactoryWidthraw.sol, 31
+	OVER
+	PUSHCONT {
+		LDREF
+		ENDS
+		CTOS
+	}
+	IF
+	LDU 128
+	LDMSGADDR
+	ENDS
+	.loc MemeFactoryWidthraw.sol, 0
+	CALLREF {
+		.inline withdraw_1d9b0783_internal
+	}
+	CALLREF {
+		.inline c7_to_c4
+	}
+	THROW 0
+}
+
+.fragment public_function_selector, {
+	DUP
+	PUSHINT 171622605
+	EQUAL
+	IFJMPREF {
+		.inline withdraw
+	}
+	DUP
+	PUSHINT 477437205
+	EQUAL
+	IFJMPREF {
+		.inline deployer
+	}
+	DUP
+	PUSHINT 640116849
+	EQUAL
+	IFJMPREF {
+		.inline getBalance
+	}
+	DUP
+	PUSHINT 1756716863
+	EQUAL
+	IFJMPREF {
+		.inline constructor
+	}
+}
+
+.fragment main_external, {
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	SETGLOB 9
+	OVER
+	CALLREF {
+		.inline c4_to_c7
+	}
+	LDU 1 ; haveSign msgSlice
+	SWAP
+	PUSHCONT {
+		PUSHPOW2 9
+		LDSLICEX
+		DUP
+		MYADDR
+		NEWC
+		STSLICE
+		STSLICE
+		ENDC
+		HASHCU
+		SWAP
+		LDU 1 ; signatureSlice hashMsgSlice hasPubkey msgSlice
+		SWAP
+		PUSHCONT {
+			LDU 256 ; signatureSlice hashMsgSlice pubkey msgSlice
+			XCHG2 S3, S3
+		}
+		PUSHCONT {
+			XCHG S2
+			GETGLOB 2
+		}
+		IFELSE
+		CHKSIGNU
+		THROWIFNOT 40
+	}
+	PUSHCONT {
+		LDU 1 ; hasPubkey msgSlice
+		SWAP
+		THROWIF 58
+	}
+	IFELSE
+	LDU 64 ; timestamp msgSlice
+	SWAP
+	.inline __replayProtection
+	LDU 32 ; expireAt msgSlice
+	SWAP
+	NOW ; msgSlice expireAt now
+	GREATER ; msgSlice expireAt>now
+	THROWIFNOT 57
+	LDU 32 ; funcId body
+	SWAP
+	CALLREF {
+		.inline public_function_selector
+	}
+	THROW 60
+}
+
+.fragment receive, {
+	GETGLOB 6
+	THROWIFNOT 76
+	GETGLOB 2
+	ISNULL
+	IFREF {
+		.inline c4_to_c7
+	}
+	.loc MemeFactoryWidthraw.sol, 27
+	PRINTSTR x46756e6473207265636569766564
+	.loc MemeFactoryWidthraw.sol, 0
+	CALLREF {
+		.inline c7_to_c4
+	}
+}
+
+.fragment main_internal, {
+	PUSHROOT
+	CTOS
+	PUSHINT 320
+	SDSKIPFIRST
+	PLDI 1
+	SETGLOB 6
+	PUSH S2
+	CTOS
+	LDU 4 ; bounced tail
+	LDMSGADDR ; bounced src tail
+	DROP
+	SETGLOB 9
+	MODPOW2 1
+	IFRET
+	OVER
+	SEMPTY ; isEmpty
+	DUP
+	PUSHCONT {
+		DROP
+		OVER
+		LDUQ 32  ; [funcId] body' ok
+		THROWIFNOT 60
+		OVER
+		EQINT 0 ; funcId body' isZero
+		DUP
+		PUSHCONT {
+			BLKDROP2 2, 1
+		}
+		IF
+	}
+	IFNOT
+	IFJMPREF {
+		.inline receive
+	}
+	SWAP
+	CALLREF {
+		.inline public_function_selector
+	}
+	THROW 60
+}
+
+.fragment default_data_cell, {
+	PUSHREF {
+		.blob x000000000000000000000000000000000000000000000000000000000000000000000000000000001_
+	}
+}
+
+.fragment upd_only_time_in_c4, {
+	PUSHROOT
+	CTOS
+	LDU 256
+	LDU 64
+	NIP
+	GETGLOB 3
+	ROT
+	NEWC
+	STU 256
+	STU 64
+	STSLICE
+	ENDC
+	POPROOT
+}
+
+; The code below forms a value of the StateInit type.
+.blob x4_ ; split_depth = nothing
+.blob x4_ ; special = nothing
+.blob xc_ ; code = just
+.cell { ; code cell
+	PUSHREFCONT {
+		DICTPUSHCONST 32
+		DICTUGETJMPZ
+		THROW 78
+		.code-dict-cell 32, {
+		}
+		.cell { ; version
+			.blob x736f6c20302e37372e30 ; sol 0.77.0
+		}
+	}
+	POPCTR c3
+	DUP
+	IFNOTJMPREF {
+		.inline main_internal
+	}
+	DUP
+	EQINT -1
+	IFJMPREF {
+		.inline main_external
+	}
+}
+.blob xc_ ; data = just
+.cell { 
+	.inline-computed-cell default_data_cell, 0
+}
+.blob x4_ ; library = hme_empty
